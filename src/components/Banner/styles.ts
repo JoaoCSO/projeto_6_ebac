@@ -8,7 +8,7 @@ export const Container = styled.section`
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2)), url(${bannerImg}); 
+  background-image: linear-gradient(rgba(0, 0, 0, 0.1)), url(${bannerImg}); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +19,7 @@ export const Title = styled.h2`
   font-size: 36px;
   font-weight: bold;
   text-align: center;
-  color: ${colors.white};
+  color: ${colors.primary};
   max-width: 539px;
   line-height: 42px;
   margin: 0 auto;

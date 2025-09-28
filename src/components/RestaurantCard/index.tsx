@@ -10,17 +10,17 @@ interface Props {
 const RestaurantCard = ({ restaurant }: Props) => {
     return (
         <Card>
-            <Image src={restaurant.image} alt={restaurant.name} />
+            <Image src={restaurant.capa} alt={restaurant.titulo} />
             <TagContainer>
-                {restaurant.highlighted && <Tag>Destaque da semana</Tag>}
-                <Tag>{restaurant.category}</Tag>
+                {restaurant.destacado && <Tag>Destaque da semana</Tag>}
+                <Tag>{restaurant.tipo}</Tag>
             </TagContainer>
             <Content>
                 <InfoBar>
-                    <Title>{restaurant.name}</Title>
-                    <Rating>⭐ {restaurant.rating}</Rating>
+                    <Title>{restaurant.titulo}</Title>
+                    <Rating>⭐ {restaurant.avaliacao}</Rating>
                 </InfoBar>
-                <Description>{restaurant.description}</Description>
+                <Description>{restaurant.descricao}</Description>
                 <Link to={`/restaurant/${restaurant.id}`}>
                     <Button>Saiba mais</Button>
                 </Link>

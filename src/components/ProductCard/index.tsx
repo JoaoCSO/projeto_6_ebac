@@ -3,16 +3,19 @@ import { Product } from '../../models/Product'
 
 interface Props {
     product: Product;
+    onAddToCart: (product: Product) => void;
 }
 
-const ProductCard = ({ product }: Props) => {
+const ProductCard = ({ product, onAddToCart }: Props) => {
     return (
         <Card>
-            <Image src={product.image} alt={product.name} />
-            <Title>{product.name}</Title>
-            <Description>{product.description}</Description>
+            <Image src={product.foto} alt={product.nome} />
+            <Title>{product.nome}</Title>
+            <Description>{product.descricao}</Description>
             <ButtonContainer>
-                <button>Adicionar ao carrinho</button>
+                <button onClick={() => onAddToCart(product)}>
+                    Adicionar ao carrinho
+                </button>
             </ButtonContainer>
         </Card>
     )

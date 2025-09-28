@@ -1,9 +1,12 @@
+import { Product } from './Product'
+
 export interface Restaurant {
     id: number;
-    name: string;
-    category: string;
-    rating: number;
-    image: string;
-    description: string;
-    highlighted?: boolean;
+    titulo: string;
+    destacado: boolean;
+    tipo: string;
+    avaliacao: number;
+    descricao: string;
+    capa: string;
+    cardapio: Product[];
 }

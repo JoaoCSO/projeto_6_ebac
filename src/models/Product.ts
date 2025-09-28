@@ -1,8 +1,8 @@
 export interface Product {
+    foto: string;
+    preco: number;
     id: number;
-    name: string;
-    description: string;
-    image: string;
-    price: number;
-    serves?: string;
+    nome: string;
+    descricao: string;
+    porcao: string;
 }

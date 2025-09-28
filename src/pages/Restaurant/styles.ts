@@ -22,7 +22,7 @@ export const Banner = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
   }
 `
 
@@ -54,7 +54,7 @@ export const ProductsList = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  align-items: stretch; /* Faz todos os cards terem a mesma altura */
+  align-items: stretch;
   
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
@@ -63,4 +63,15 @@ export const ProductsList = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
+`
+
+export const Loading = styled.div`
+  text-align: center;
+  font-size: 18px;
+  color: ${colors.primary};
+  padding: 40px;
+  min-height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
