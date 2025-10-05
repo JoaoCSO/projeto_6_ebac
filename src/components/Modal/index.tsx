@@ -1,4 +1,6 @@
 import { useEffect } from 'react'
+import { useAppDispatch } from '../../store/hooks'
+import { addToCart, openCart } from '../../store/reducers/cart'
 import { Overlay, Container, Header, ProductImage, ProductInfo, Title, Description, Portion, ButtonGroup, Button, CloseButton } from './styles'
 import { Product } from '../../models/Product'
 
@@ -9,6 +11,8 @@ interface Props {
 }
 
 const Modal = ({ isOpen, onClose, product }: Props) => {
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
         const handleEscape = (e: KeyboardEvent) => {
             if (e.key === 'Escape') onClose()
@@ -33,6 +37,12 @@ const Modal = ({ isOpen, onClose, product }: Props) => {
         }
     }
 
+    const handleAddToCart = () => {
+        dispatch(addToCart(product))
+        dispatch(openCart())
+        onClose()
+    }
+
     return (
         <Overlay onClick={handleOverlayClick}>
             <Container>
@@ -47,7 +57,7 @@ const Modal = ({ isOpen, onClose, product }: Props) => {
                     <Description>{product.descricao}</Description>
                     <Portion>Serve: {product.porcao}</Portion>
                     <ButtonGroup>
-                        <Button>
+                        <Button onClick={handleAddToCart}>
                             Adicionar ao carrinho - R$ {product.preco.toFixed(2).replace('.', ',')}
                         </Button>
                     </ButtonGroup>
