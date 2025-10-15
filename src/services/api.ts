@@ -1,7 +1,7 @@
 import { Restaurant } from '../models/Restaurant'
 
 export const api = {
-    baseURL: 'https://ebac-fake-api.vercel.app/api/efood',
+    baseURL: 'https://api-ebac.vercel.app/api/efood', 
 
     async getRestaurants(): Promise<Restaurant[]> {
         const response = await fetch(`${this.baseURL}/restaurantes`)
