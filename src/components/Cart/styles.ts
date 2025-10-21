@@ -75,10 +75,14 @@ export const RemoveButton = styled.button`
   right: 8px;
   background: none;
   border: none;
-  color: ${colors.primary};
-  font-size: 16px;
   cursor: pointer;
   padding: 4px;
+  
+  img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) saturate(100%) invert(45%) sepia(84%) saturate(2270%) hue-rotate(335deg) brightness(95%) contrast(88%);
+  }
   
   &:hover {
     opacity: 0.7;

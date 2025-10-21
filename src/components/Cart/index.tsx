@@ -4,8 +4,14 @@ import {
     removeFromCart,
     selectCartItems,
     selectCartIsOpen,
-    selectCartTotal
+    selectCartTotal,
+    selectCurrentStep,
+    goToDelivery
 } from '../../store/reducers/cart'
+import Delivery from '../Checkout/Delivery'
+import Payment from '../Checkout/Payment'
+import Confirmation from '../Checkout/Confirmation'
+import lixeiraIcon from '../../assets/images/lixeira.png' // Import da imagem da lixeira
 import {
     Overlay,
     Sidebar,
@@ -27,8 +33,12 @@ const Cart = () => {
     const items = useAppSelector(selectCartItems)
     const isOpen = useAppSelector(selectCartIsOpen)
     const total = useAppSelector(selectCartTotal)
+    const currentStep = useAppSelector(selectCurrentStep)
 
     const handleClose = () => {
+        if (currentStep === 'confirmation') {
+            return // Não permitir fechar na tela de confirmação
+        }
         dispatch(closeCart())
     }
 
@@ -36,8 +46,12 @@ const Cart = () => {
         dispatch(removeFromCart(id))
     }
 
+    const handleContinue = () => {
+        dispatch(goToDelivery())
+    }
+
     const handleOverlayClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
+        if (e.target === e.currentTarget && currentStep !== 'confirmation') {
             handleClose()
         }
     }
@@ -48,40 +62,48 @@ const Cart = () => {
         <>
             <Overlay onClick={handleOverlayClick} />
             <Sidebar>
-                <h2>Carrinho</h2>
-
-                {items.length === 0 ? (
-                    <EmptyCart>
-                        <p>Seu carrinho está vazio</p>
-                        <p>Adicione produtos para continuar</p>
-                    </EmptyCart>
-                ) : (
+                {currentStep === 'cart' && (
                     <>
-                        {items.map(item => (
-                            <CartItem key={item.id}>
-                                <CartItemImage src={item.foto} alt={item.nome} />
-                                <CartItemInfo>
-                                    <CartItemTitle>{item.nome}</CartItemTitle>
-                                    <CartItemPrice>
-                                        {item.quantity}x R$ {item.preco.toFixed(2).replace('.', ',')}
-                                    </CartItemPrice>
-                                </CartItemInfo>
-                                <RemoveButton onClick={() => handleRemove(item.id)}>
-                                    ✕
-                                </RemoveButton>
-                            </CartItem>
-                        ))}
+                        <h2>Carrinho</h2>
 
-                        <TotalSection>
-                            <TotalText>Valor total</TotalText>
-                            <TotalValue>R$ {total.toFixed(2).replace('.', ',')}</TotalValue>
-                        </TotalSection>
+                        {items.length === 0 ? (
+                            <EmptyCart>
+                                <p>Seu carrinho está vazio</p>
+                                <p>Adicione produtos para continuar</p>
+                            </EmptyCart>
+                        ) : (
+                            <>
+                                {items.map(item => (
+                                    <CartItem key={item.id}>
+                                        <CartItemImage src={item.foto} alt={item.nome} />
+                                        <CartItemInfo>
+                                            <CartItemTitle>{item.nome}</CartItemTitle>
+                                            <CartItemPrice>
+                                                R$ {item.preco.toFixed(2).replace('.', ',')}
+                                            </CartItemPrice>
+                                        </CartItemInfo>
+                                        <RemoveButton onClick={() => handleRemove(item.id)}>
+                                            <img src={lixeiraIcon} alt="Remover" />
+                                        </RemoveButton>
+                                    </CartItem>
+                                ))}
 
-                        <ContinueButton>
-                            Continuar com a entrega
-                        </ContinueButton>
+                                <TotalSection>
+                                    <TotalText>Valor total</TotalText>
+                                    <TotalValue>R$ {total.toFixed(2).replace('.', ',')}</TotalValue>
+                                </TotalSection>
+
+                                <ContinueButton onClick={handleContinue}>
+                                    Continuar com a entrega
+                                </ContinueButton>
+                            </>
+                        )}
                     </>
                 )}
+
+                {currentStep === 'delivery' && <Delivery />}
+                {currentStep === 'payment' && <Payment />}
+                {currentStep === 'confirmation' && <Confirmation />}
             </Sidebar>
         </>
     )

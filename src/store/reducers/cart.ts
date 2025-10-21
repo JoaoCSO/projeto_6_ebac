@@ -1,6 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Product } from '../../models/Product'
 
+export interface DeliveryData {
+    receiver: string
+    address: string
+    city: string
+    zipCode: string
+    number: string
+    complement?: string
+}
+
+export interface PaymentData {
+    cardOwner: string
+    cardNumber: string
+    cardCode: string
+    expiresMonth: string
+    expiresYear: string
+}
+
 interface CartItem extends Product {
     quantity: number
 }
@@ -8,11 +25,19 @@ interface CartItem extends Product {
 interface CartState {
     items: CartItem[]
     isOpen: boolean
+    currentStep: 'cart' | 'delivery' | 'payment' | 'confirmation'
+    deliveryData: DeliveryData | null
+    paymentData: PaymentData | null
+    orderId: string | null
 }
 
 const initialState: CartState = {
     items: [],
-    isOpen: false
+    isOpen: false,
+    currentStep: 'cart',
+    deliveryData: null,
+    paymentData: null,
+    orderId: null
 }
 
 const cartSlice = createSlice({
@@ -53,6 +78,34 @@ const cartSlice = createSlice({
         },
         closeCart: (state) => {
             state.isOpen = false
+        },
+        setDeliveryData: (state, action: PayloadAction<DeliveryData>) => {
+            state.deliveryData = action.payload
+            state.currentStep = 'payment'
+        },
+        setPaymentData: (state, action: PayloadAction<PaymentData>) => {
+            state.paymentData = action.payload
+        },
+        setOrderId: (state, action: PayloadAction<string>) => {
+            state.orderId = action.payload
+            state.currentStep = 'confirmation'
+        },
+        goToDelivery: (state) => {
+            state.currentStep = 'delivery'
+        },
+        goToPayment: (state) => {
+            state.currentStep = 'payment'
+        },
+        goToCart: (state) => {
+            state.currentStep = 'cart'
+        },
+        resetCheckout: (state) => {
+            state.items = []
+            state.currentStep = 'cart'
+            state.deliveryData = null
+            state.paymentData = null
+            state.orderId = null
+            state.isOpen = false
         }
     }
 })
@@ -64,7 +117,14 @@ export const {
     clearCart,
     toggleCart,
     openCart,
-    closeCart
+    closeCart,
+    setDeliveryData,
+    setPaymentData,
+    setOrderId,
+    goToDelivery,
+    goToPayment,
+    goToCart,
+    resetCheckout
 } = cartSlice.actions
 
 export default cartSlice.reducer
@@ -76,3 +136,7 @@ export const selectCartTotal = (state: { cart: CartState }) =>
     state.cart.items.reduce((total, item) => total + (item.preco * item.quantity), 0)
 export const selectCartItemsCount = (state: { cart: CartState }) =>
     state.cart.items.reduce((total, item) => total + item.quantity, 0)
+export const selectCurrentStep = (state: { cart: CartState }) => state.cart.currentStep
+export const selectDeliveryData = (state: { cart: CartState }) => state.cart.deliveryData
+export const selectPaymentData = (state: { cart: CartState }) => state.cart.paymentData
+export const selectOrderId = (state: { cart: CartState }) => state.cart.orderId
